@@ -1,6 +1,12 @@
-## QWEL STARTER TEMPLATE
+## QWEL ISSUE LABELS
 
-[QWEL.DESIGN](https://qwel.design) のweb開発のためのスターターキット
+Issue のためのラベル自動生成スクリプト  
+
+- red: **バグ**: レイアウト・動作等の不具合
+- orange: **要望**: 追加・修正の要望
+- green: **レビュー待ち**: ディレクター・デザイナーの確認待ち
+- blue: **保留**: クライアントの承認・確認待ち
+- purple: **提案**: 改善案の提案・相談等
 
 ## ライセンス | License
 
