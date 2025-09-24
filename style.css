@@ -1350,6 +1350,11 @@ button, input, select, textarea {
 .form__table th {
   width: 12rem;
 }
+.form__table input, .form__table select, .form__table textarea {
+  border: none;
+  border-radius: var(--spacing--x-small);
+  background-color: rgba(80.58, 169.898, 225.42, 0.05);
+}
 .form__buttons {
   display: flex;
   flex-flow: row wrap;
