@@ -25,7 +25,7 @@ $modal-ui-hover-color: $icon-hover-color !default;;
     visibility: hidden;
   }
 
-  &__main {
+  &__container {
     position: absolute;
     inset: 0;
     z-index: 2000;
@@ -40,11 +40,11 @@ $modal-ui-hover-color: $icon-hover-color !default;;
   }
 
   &__image {
-    opacity: 0;
+    opacity: 1;
     transition: opacity 0.25s ease;
 
-    &.is-loaded {
-      opacity: 1;
+    &:not(.is-loaded) {
+      opacity: 0;
     }
   }
 
@@ -67,6 +67,7 @@ $modal-ui-hover-color: $icon-hover-color !default;;
     border-radius: 50%;
     @include use-icon($modal-ui-bg, $modal-ui-color, $modal-ui-hover-bg, $modal-ui-hover-color, 0);
     overflow: hidden;
+    cursor: pointer;
   }
 
   &__close {

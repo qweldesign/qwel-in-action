@@ -5,42 +5,62 @@
  * See LICENSE file for details.
  */
 
+/**
+ * モーダルウィンドウとして機能するギャラリー
+ * 
+ * 使い方:
+ * _modal.scss をバンドルした css を読み込み,
+ * ギャラリー本体に [data-gallery="modal"] 属性を付与し,
+ * ギャラリーアイテムに [data-gallery-item] 属性を付与する
+ * ギャラリーアイテムは img の親要素: li, figure などを指定すること 
+ * 
+ * オプション:
+ * breakpoint: 指定のBP未満のビューポートでは発火しない
+ */
+
 export default class Modal {
-  constructor(options = {}) {
-    // 特定のBP未満のビューポートでは発火しない
-    const breakpoint = options.breakpoint || 900;
+  constructor(elem, options = {}) {
+    // 指定のBP未満のビューポートでは発火しない
+    const breakpoint = options.breakpoint || 600;
     if (window.innerWidth < breakpoint) return;
 
-    // ギャラリー要素を格納
-    this.gallery = options.gallery || document.querySelector('[data-gallery]');
-    if (!this.gallery) return;
+    // 要素
+    this.elem = elem || document.querySelector('[data-gallery="modal"]');
+    if (!this.elem) return;
+    this.items = Array.from(this.elem.querySelectorAll('[data-gallery-item]'));
+    if (!this.items.length) return;
 
-    // 全てのアイテムを含むNodeListを配列として格納
-    const items = options.items || this.gallery.querySelectorAll('[data-gallery-item] img');
-    if (!items.length) return;
-    this.items = Array.from(items);
+    // 状態管理
     this.index = 0;
 
-    // .modal: body末尾に挿入されるラッパー要素
-    this.elem = document.createElement('div');
-    this.elem.classList.add('modal', 'is-hidden'); // opacity: 0
-    this.elem.setAttribute('aria-hidden', 'true'); // visibility: hidden
-    document.body.appendChild(this.elem);
+    // 各要素生成
+    this.createModal();
 
-    // .modal__main: モーダル本体
+    // イベント登録
+    this.handleEvents();
+  }
+
+  createModal() {
+    // .modal: body末尾に挿入されるラッパー要素
     this.modal = document.createElement('div');
-    this.modal.classList.add('modal__main');
-    this.elem.appendChild(this.modal);
+    this.modal.classList.add('modal', 'is-hidden'); // opacity: 0
+    this.modal.setAttribute('aria-hidden', 'true'); // visibility: hidden
+    document.body.appendChild(this.modal);
+
+    // .modal__container: モーダル本体
+    this.container = document.createElement('div');
+    this.container.classList.add('modal__container');
+    this.modal.appendChild(this.container);
 
     // .modal__image: モーダル内の拡大表示する画像
     this.image = document.createElement('img');
     this.image.classList.add('modal__image', 'is-loaded');
-    this.modal.appendChild(this.image);
+    this.container.appendChild(this.image);
 
     // .modal__overlay: オーバーレイ (クリック操作で閉じる)
     this.overlay = document.createElement('div');
     this.overlay.classList.add('modal__overlay');
-    this.elem.appendChild(this.overlay);
+    this.modal.appendChild(this.overlay);
 
     // .modal__close: 閉じるボタン
     this.close = document.createElement('div');
@@ -51,7 +71,7 @@ export default class Modal {
     closeSpan.classList.add('icon__span');
     closeIcon.appendChild(closeSpan);
     this.close.appendChild(closeIcon);
-    this.elem.appendChild(this.close);
+    this.modal.appendChild(this.close);
 
     // .modal__prev: 前へボタン
     this.prev = document.createElement('div');
@@ -62,7 +82,7 @@ export default class Modal {
     prevSpan.classList.add('icon__span');
     prevIcon.appendChild(prevSpan);
     this.prev.appendChild(prevIcon);
-    this.elem.appendChild(this.prev);
+    this.modal.appendChild(this.prev);
 
     // .modal__next: 次へボタン
     this.next = document.createElement('div');
@@ -73,10 +93,7 @@ export default class Modal {
     nextSpan.classList.add('icon__span');
     nextIcon.appendChild(nextSpan);
     this.next.appendChild(nextIcon);
-    this.elem.appendChild(this.next);
-
-    // 発火
-    this.handleEvents();
+    this.modal.appendChild(this.next);
   }
 
   handleEvents() {
@@ -95,11 +112,12 @@ export default class Modal {
   show(i) {
     this.index = (i + this.items.length) % this.items.length;
     const item = this.items[this.index];
-    const src = item.getAttribute('src');
-    
+    const img = item.querySelector('img');
+    const src = img.getAttribute('src');
+
     // モーダルを開く
-    this.elem.classList.remove('is-hidden');
-    this.elem.setAttribute('aria-hidden', 'false');
+    this.modal.classList.remove('is-hidden');
+    this.modal.setAttribute('aria-hidden', 'false');
 
     // 画像切り替え
     if (this.image.getAttribute('src')) {
@@ -117,17 +135,17 @@ export default class Modal {
   }
 
   hide() {
-    this.transitionEnd(this.elem, () => {
-      this.elem.classList.add('is-hidden');
+    this.transitionEnd(this.modal, () => {
+      this.modal.classList.add('is-hidden');
     }).then(() => {
-      this.elem.setAttribute('aria-hidden', 'true');
+      this.modal.setAttribute('aria-hidden', 'true');
     });
   }
 
   transitionEnd(elem, func) {
     // CSS遷移の完了を監視
     let callback;
-    const promise = new Promise((resolve, reject) => {
+    const promise = new Promise((resolve) => {
       callback = () => resolve(elem);
       elem.addEventListener('transitionend', callback);
     });

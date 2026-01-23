@@ -1,19 +1,20 @@
 # QWEL in Action | フルスクラッチのUI/UXコンポーネント集
 
 Web開発スターターキット  
-下記9つの**実務用 UI/UX コンポーネント**を含みます  
+下記10の**実務用 UI/UX コンポーネント**を含みます  
 
 Web development starter kit  
-Includes the following 9 **UI/UX Components**  
+Includes the following 10 **UI/UX Components**  
 
+- ScrollToAnchor
+- ActiveHeader
+- ScrollSpy
+- ReadableOnScroll
 - BackToTop
 - DrawerMenu
-- Embed
+- SafeEmbed
 - Fader
 - Modal
-- Preloadr
-- ResponsiveColor
-- RevealOnScroll
 - Slider
 
 ▶ [QWEL in Action | フルスクラッチのUI/UXコンポーネント集](https://qwel.design)  
@@ -22,7 +23,7 @@ Includes the following 9 **UI/UX Components**
 
 ## 実務用UI/UXコンポーネント | UI/UX Components
 
-上記9つのコンポーネントは、どのようなwebサイトにも役に立つであろう、実務用UI/UXコンポーネントとしての定番作品です。  
+上記10のコンポーネントは、どのようなwebサイトにも役に立つであろう、実務用UI/UXコンポーネントとしての定番作品です。  
 
 基本的な設計志向として、各コンポーネントは**SCSSとJSの2対1組のファイルのみ**で動きます。  
 最軽量の形態として、各々バンドルし、1つのCSSファイルと、1つのJSファイルで済むことを目指しています。  

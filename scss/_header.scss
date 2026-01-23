@@ -17,28 +17,29 @@ $header-height:  4.5rem !default;
 
   // サイトタイトルがテキストの場合 (ロゴ未使用の場合)
   // モバイル時は header 背景透過
-  // responsiveColor有効時には、文字色は白になる
+  // 白文字にテキストシャドウを入れる
   @media (max-width: breakpoint("md") - 0.1) {
-    .gNav__siteBrand.responsiveColor a {
-      color: $link-color;
+    .gNav__siteBrand a {
+      color: theme-color("lightest");
+      text-shadow: 0 0 6px #000;
 
       &:hover {
-        color: $link-hover-color;
+        color: theme-color("lightest");
       }
     }
   }
 
   // タブレット・デスクトップ時は header 背景を白 (gNavの視認性)
-  // マウスオーバー時、およびファーストビューの未スクロール時の設定 
+  // マウスオーバー時、およびファーストビューのスクロール時の設定 
   @media (min-width: breakpoint("md")) {
-    &:hover, &.is-active {
+    &:hover, &:not(.is-active) {
       background-color: $body-bg;
 
-      a, .gNav__siteBrand.responsiveColor a {
-        color: $link-color !important; // .responsiveColor
+      a, .gNav__siteBrand a {
+        color: $link-color;
 
         &:hover {
-          color: $link-hover-color !important;
+          color: $link-hover-color;
         }
       }
     }

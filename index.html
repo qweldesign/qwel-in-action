@@ -8,22 +8,23 @@
     <link rel="icon" href="./favicon.ico">
   </head>
   <body>
+    <div data-scroll-sentinel></div>
     <div id="app">
-      <header id="header" class="header">
+      <header id="header" class="header" data-active-header>
         <div class="header__container">
           <nav id="gNav" class="gNav">
-            <h1 class="gNav__siteBrand responsiveColor">
+            <h1 class="gNav__siteBrand" data-site-brand>
               <a href="/demo/">Sample Demo</a>
             </h1>
-            <ul class="gNav__primaryMenu visible-md">
-              <li class="gNav__menuItem" v-for="section in sections">
+            <ul class="gNav__primaryMenu visible-md" data-primary-menu>
+              <li class="gNav__menuItem" data-spy-nav v-for="section in sections">
                 <a :href="`#${section.id}`" v-html="section.name"></a>
               </li>
             </ul>
-            <ul class="gNav__socialMenu visible-md">
+            <ul class="gNav__socialMenu visible-md" data-social-menu>
               <template v-for="(item, key) in social">
-                <li class="gNav__menuItem gNav__menuItem--social" v-if="item">
-                  <a :href="`https://${key}.com/`">
+                <li class="gNav__menuItem social" v-if="item">
+                  <a :href="`https://${key}.com/qweldesign`">
                     <svg :class="`icon icon--si icon--${key} icon--md`" width="36" height="36" aria-hidden="true">
                       <use :href="`./assets/icons.svg#si-${key}`"></use>
                     </svg>
@@ -43,12 +44,12 @@
             <a class="button button--primary button--md" href="https://qwel.design/">QWEL.DESIGN</a>
           </div>
         </header>
-        <section :id="sections['feature'].id" class="section">
+        <section :id="sections['feature'].id" class="section" data-spy-section>
           <div class="section__inner">
-            <h2 class="section__heading pb-large" data-reveal>{{ sections['feature'].name }}</h2>
-            <div class="slider" data-gap="72" data-reveal>
-              <figure class="slider__inner">
-                <figure class="slider__item" v-for="item in sections['feature'].items">
+            <h2 class="section__heading pb-large" data-readable>{{ sections['feature'].name }}</h2>
+            <div class="slider" data-gallery="slider" data-flickable data-gap="72" data-readable>
+              <figure class="slider__inner" data-gallery-main>
+                <figure class="slider__item" data-gallery-item v-for="item in sections['feature'].items">
                   <img class="slider__image" :src="item.src">
                   <figcaption class="slider__caption"><a href="#">{{ item.heading }}</a></figcaption>
                 </figure>
@@ -56,10 +57,10 @@
             </div>
           </div>
         </section>
-        <section :id="sections['about'].id" class="section">
+        <section :id="sections['about'].id" class="section" data-spy-section>
           <div class="section__inner">
-            <h2 class="section__heading" data-reveal>{{ sections['about'].name }}</h2>
-            <div class="section__container" data-reveal>
+            <h2 class="section__heading" data-readable>{{ sections['about'].name }}</h2>
+            <div class="section__container" data-readable>
               <article class="postItem postItem--single">
                 <figure class="postItem__image">
                   <img :src="sections['about'].src">
@@ -75,14 +76,14 @@
             </div>
           </div>
         </section>
-        <section :id="sections['service'].id" class="section">
+        <section :id="sections['service'].id" class="section" data-spy-section>
           <div class="section__inner">
-            <h2 class="section__heading" data-reveal>{{ sections['service'].name }}</h2>
-            <div class="section__container" data-reveal>
-              <div class="postList postList--grid">
-                <div class="postList__item" v-for="item in sections['service'].items">
+            <h2 class="section__heading" data-readable>{{ sections['service'].name }}</h2>
+            <div class="section__container" data-readable>
+              <div class="postList postList--grid" data-gallery="modal">
+                <div class="postList__item" data-gallery-main v-for="item in sections['service'].items">
                   <section class="postItem">
-                    <figure class="postItem__image">
+                    <figure class="postItem__image" data-gallery-item>
                       <img :src="item.src">
                     </figure>
                     <div class="postItem__content">
@@ -104,10 +105,10 @@
             </div>
           </div>
         </section>
-        <section :id="sections['news'].id" class="section">
+        <section :id="sections['news'].id" class="section" data-spy-section>
           <div class="section__inner">
-            <h2 class="section__heading" data-reveal>{{ sections['news'].name }}</h2>
-            <div class="section__container" data-reveal>
+            <h2 class="section__heading" data-readable>{{ sections['news'].name }}</h2>
+            <div class="section__container" data-readable>
               <ul class="postList postList--list">
                 <li class="postList__item" v-for="item in sections['news'].items">
                   <div class="postItem">
@@ -133,10 +134,10 @@
             </div>
           </div>
         </section>
-        <section :id="sections['team'].id" class="section">
+        <section :id="sections['team'].id" class="section" data-spy-section>
           <div class="section__inner">
-            <h2 class="section__heading" data-reveal>{{ sections['team'].name }}</h2>
-            <div class="section__container" data-reveal>
+            <h2 class="section__heading" data-readable>{{ sections['team'].name }}</h2>
+            <div class="section__container" data-readable>
               <article class="postItem postItem--single">
                 <figure class="postItem__image">
                   <img :src="sections['team'].src">
@@ -152,18 +153,18 @@
             </div>
           </div>
         </section>
-        <section :id="sections['access'].id" class="section">
+        <section :id="sections['access'].id" class="section" data-spy-section>
           <div class="section__inner pb-none">
-            <h2 class="section__heading pb-large" data-reveal>{{ sections['access'].name }}</h2>
-            <div class="embed" data-reveal>
+            <h2 class="section__heading pb-large" data-readable>{{ sections['access'].name }}</h2>
+            <div class="embed" data-safe-embed data-readable>
               <iframe :src="sections['access'].src"></iframe>
             </div>
           </div>
         </section>
-        <section :id="sections['contact'].id" class="section">
+        <section :id="sections['contact'].id" class="section" data-spy-section>
           <div class="section__inner">
-            <h2 class="section__heading" data-reveal>{{ sections['contact'].name }}</h2>
-            <div class="section__container section__container--md" data-reveal>
+            <h2 class="section__heading" data-readable>{{ sections['contact'].name }}</h2>
+            <div class="section__container section__container--md" data-readable>
               <p class="text-center">{{ sections['contact'].description }}</p>
               <form class="form">
                 <table class="form__table">
@@ -197,12 +198,12 @@
           </div>
         </section>
       </main>
-      <div class="cover fader preloader" data-spinner-off="true">
-        <div class="cover__inner">
-          <div class="cover__image cover__image--num_1"></div>
-          <div class="cover__image cover__image--num_2"></div>
-          <div class="cover__image cover__image--num_3"></div>
-          <div class="cover__image cover__image--num_4"></div>
+      <div class="fader" data-gallery="fader">
+        <div class="fader__inner" data-gallery-main>
+          <div class="fader__item image-1" data-gallery-item></div>
+          <div class="fader__item image-2" data-gallery-item></div>
+          <div class="fader__item image-3" data-gallery-item></div>
+          <div class="fader__item image-4" data-gallery-item></div>
         </div>
       </div>
       <footer id="footer" class="footer">

@@ -5,41 +5,53 @@
  * See LICENSE file for details.
  */
 
+/**
+ * スライドアニメーションで遷移するギャラリー
+ * ドラグ, ホイール操作対応
+ * 
+ * 使い方:
+ * _slider.scss をバンドルした css を読み込み,
+ * 画面幅100%の要素内にギャラリーを配置する
+ * ギャラリー本体 (div等) に [data-gallery="slider"] 属性を付与し,
+ * ギャラリーインナーに (ul等) [data-gallery-main] 属性を付与し,
+ * ギャラリーアイテムに (li等) [data-gallery-item] 属性を付与する
+ * 
+ * オプション (data属性で指定):
+ * data-flickable: ドラグ、ホイール操作に対応 (規定でOFF, ONにする場合値は不要)
+ * data-aspect-ratio: アスペクト比 (SCSSも修正が必要)
+ * data-gap: アイテム間隔(px) SCSSで指定不可
+ * data-interval: アニメーション時間間隔
+ * data-duration: アニメーション所要時間
+ */
 export default class Slider {
-  // data属性によるパラメータ管理:
-  // data-is-header: headerに設置 = ドラグ、ホイール操作に対応しない
-  // data-aspect-ratio: アスペクト比 (SCSSも修正が必要)
-  // data-gap: アイテム間隔(px) SCSSで指定不可
-  // data-interval: スライドアニメーション時間間隔
-  // data-duration: スライドアニメーション所要時間
   constructor(elem) {
-    // Sliderの各要素
-    this.elem = elem || document.querySelector('.slider');
+    // 要素
+    this.elem = elem || document.querySelector('[data-gallery="slider"]');
     if (!this.elem) return;
-    this.inner = this.elem.querySelector('.slider__inner');
+    this.inner = this.elem.querySelector('[data-gallery-main]');
     if (!this.inner) return;
-    this.items = this.inner.children;
+    this.items = Array.from(this.elem.querySelectorAll('[data-gallery-item]'));
     if (!this.items.length) return;
 
-    // 各オプション (data属性から取得)
-    this.isHeader = this.elem.dataset.isHeader || false; // headerに設置する場合はドラグ、ホイール操作に対応しない
-    this.aspectRatio = this.elem.dataset.aspectRatio || 8 / 5;
-    this.gap = this.elem.dataset.gap - 0 || 0; // アイテム間隔(px)
-    this.interval = this.elem.dataset.interval || 3000; // 1000未満を指定すると自動再生しない
-    this.duration = this.elem.dataset.duration || 500;
+    // オプションをdata属性から取得
+    this.flickable = this.elem.hasAttribute('data-flickable') || false;
+    this.aspectRatio = Number(this.elem.dataset.aspectRatio) || 8 / 5;
+    this.gap = Number(this.elem.dataset.gap) || 96;
+    this.interval = Number(this.elem.dataset.interval) || 3000; // 1000未満を指定すると自動再生しない
+    this.duration = Number(this.elem.dataset.duration) || 500;
 
     // innerにスタイル適用
-    this.inner.style.flexWrap = 'nowrap'; // .wp-block-galleryのリセット
+    this.inner.style.flexWrap = 'nowrap'; // .wp-block-gallery を Reset (WordPress対応)
     this.inner.style.gap = `${this.gap}px`;
 
-    // 各状態管理
+    // 状態管理
     this.currentIndex = 0;
     this.itemsCount = this.items.length;
     this.distance = 0; // インラインでtranslateXに適用する値
     this.dragDistance = []; // ドラグ操作の軌跡を保持
     this.isAnimated = false;
 
-    // 各セットアップ
+    // 各種セットアップ
     this.setupNavs();
     this.setupItems();
     this.readyMove(-3, true); // 左に3つアイテムを足しておく
@@ -49,7 +61,7 @@ export default class Slider {
     // リサイズ
     this.windowResizeHandler();
 
-    // 自動再生
+    // 開始
     if (this.interval >= 1000) this.startInterval();
   }
 
@@ -63,24 +75,6 @@ export default class Slider {
   // 停止
   stopInterval() {
     this.isPlay = false;
-  }
-
-  loop(timeCurrent) {
-    if (!this.timeStart) {
-      this.timeStart = timeCurrent;
-    }
-    const timeElapsed = timeCurrent - this.timeStart;
-
-    timeElapsed < this.interval
-      ? window.requestAnimationFrame(this.loop.bind(this))
-      : this.done();
-  }
-
-  done() {
-    if (this.isPlay) {
-      this.startInterval();
-      this.move(1);
-    }
   }
 
   // sizeを指定して、スライダーを動かす
@@ -137,7 +131,25 @@ export default class Slider {
     }
   }
 
-  // ナビゲーション(.slider__prev, .slider__next, .slider__nav)を設置
+  loop(timeCurrent) {
+    if (!this.timeStart) {
+      this.timeStart = timeCurrent;
+    }
+    const timeElapsed = timeCurrent - this.timeStart;
+
+    timeElapsed < this.interval
+      ? window.requestAnimationFrame(this.loop.bind(this))
+      : this.done();
+  }
+
+  done() {
+    if (this.isPlay) {
+      this.startInterval();
+      this.move(1);
+    }
+  }
+
+  // ナビゲーション(.slider__prev, .slider__next, .sliderNav)を設置
   setupNavs() {
     // .slider__prev
     this.prev = document.createElement('a');
@@ -157,14 +169,14 @@ export default class Slider {
     icon.innerHTML = '<span class="icon__span"></span>';
     this.next.appendChild(icon);
 
-    // .slider__nav
+    // .sliderNav
     this.nav = document.createElement('ul');
-    this.nav.classList.add('slider__nav');
+    this.nav.classList.add('sliderNav');
 
-    // .slider__navItem
+    // .sliderNav__item
     for (let i = 0; i < this.itemsCount; i++) {
       const li = document.createElement('li');
-      li.classList.add('slider__navItem');
+      li.classList.add('sliderNav__item');
       li.dataset.targetIndex = i; // data-target-indexを挿入
       this.nav.appendChild(li);
     }
@@ -180,6 +192,7 @@ export default class Slider {
       for (let i = 0; i < this.itemsCount; i++) {
         const clone = this.items[i].cloneNode(true);
         this.inner.appendChild(clone);
+        this.items.push(clone);
       }
     }
   }
@@ -211,7 +224,7 @@ export default class Slider {
     this.delta = 0;
 
     // ドラグおよびホイール操作
-    if (!this.isHeader) {
+    if (this.flickable) {
       if (touchSupported) {
         this.inner.addEventListener('touchstart', (event) => {
           this.x = event.touches[0].clientX;
@@ -272,7 +285,7 @@ export default class Slider {
       });
     }
 
-    // img > a リンク無効化
+    // img > a リンク無効化 (WordPress対応)
     this.inner.querySelectorAll('.post__image > a').forEach((elem) => {
       elem.addEventListener(myTouch, (event) => {
         event.preventDefault();

@@ -1,3 +1,4 @@
+// Vue
 import { createApp } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.0/vue.esm-browser.prod.js';
 
 const data = {
@@ -101,7 +102,7 @@ const data = {
         access: {
           id: 'access',
           name: 'access',
-          src: 'https://www.google.com/maps/embed'
+          src: 'https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d3227.2986434445115!2d135.99!3d36.013!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sja!2sjp!4v1768971157714!5m2!1sja!2sjp'
         },
         contact: {
           id: 'contact',
@@ -121,31 +122,9 @@ const data = {
 
 createApp(data).mount('#app');
 
-// Header toggle
-window.addEventListener('scroll', () => {
-  const header = document.getElementById('header');
-  if (0 < window.scrollY) {
-    header.classList.add('is-active');
-  } else {
-    header.classList.remove('is-active');
-  }
-});
-
-// Auto Copyright
-import AutoCopyright from './js/autoCopyright.js';
-new AutoCopyright(2019, 'QWEL.DESIGN');
-
-// Back To Top
-import BackToTop from './js/backToTop.js';
-new BackToTop();
-
-// Drawer Menu
-import DrawerMenu from './js/drawerMenu.js';
-new DrawerMenu();
-
-// Embed
-import Embed from './js/embed.js';
-new Embed();
+// Action Core
+import ActionCore from './js/action-core.js';
+new ActionCore.Preset();
 
 // Fader
 import Fader from './js/fader.js';
@@ -155,18 +134,27 @@ new Fader();
 import Modal from './js/modal.js';
 new Modal();
 
-// Preloader
-import Preloader from './js/preloader.js';
-new Preloader();
-
-// Responsive Color
-import ResponsiveColor from './js/responsiveColor.js';
-new ResponsiveColor();
-
-// Reveal On Scroll
-import RevealOnScroll from './js/revealOnScroll.js';
-new RevealOnScroll();
-
 // Slider
 import Slider from './js/slider.js';
 new Slider();
+
+/**
+ * Auto Copyright
+ * © 2026 QWEL.DESIGN (https://qwel.design)
+ * Released under the MIT License.
+ * See LICENSE file for details.
+ */
+
+class AutoCopyright {
+  constructor(startYear, companyName, elem) {
+    elem ||= document.querySelector('.footer__copyright');
+    if (elem) elem.innerHTML = this.generate(startYear, companyName);
+  }
+
+  generate(startYear, companyName) {
+    const currentYear = new Date().getFullYear();
+    return `&copy; ${startYear} - ${currentYear} ${companyName}`;
+  }
+}
+
+new AutoCopyright(2019, 'QWEL.DESIGN');
