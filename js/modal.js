@@ -7,15 +7,16 @@
 
 /**
  * モーダルウィンドウとして機能するギャラリー
+ * ハッシュ(#)による履歴保持対応
  * 
  * 使い方:
  * _modal.scss をバンドルした css を読み込み,
- * ギャラリー本体に [data-gallery="modal"] 属性を付与し,
- * ギャラリーアイテムに [data-gallery-item] 属性を付与する
- * ギャラリーアイテムは img の親要素: li, figure などを指定すること 
+ * ギャラリー (画像リストを含むラッパー要素) に [data-gallery="modal"] 属性を付与し,
+ * 画像を開くリンクには [data-gallery-src="[imagepath]"] 属性を付与する 
  * 
  * オプション:
  * breakpoint: 指定のBP未満のビューポートでは発火しない
+ * syncWithHistory: hashを使用して履歴を残す (規定でON)
  */
 
 export default class Modal {
@@ -24,20 +25,36 @@ export default class Modal {
     const breakpoint = options.breakpoint || 600;
     if (window.innerWidth < breakpoint) return;
 
+    // hashを使用して履歴を残す (規定でON)
+    const syncWithHistory = options.syncWithHistory ?? true;
+
     // 要素
     this.elem = elem || document.querySelector('[data-gallery="modal"]');
     if (!this.elem) return;
-    this.items = Array.from(this.elem.querySelectorAll('[data-gallery-item]'));
-    if (!this.items.length) return;
+    this.links = Array.from(this.elem.querySelectorAll('[data-gallery-src]'));
+    if (!this.links.length) return;
 
     // 状態管理
+    this.isShown = false;
     this.index = 0;
+    if (syncWithHistory) {
+      // hash と data属性の値のセットをマップとして保持
+      this.map = [];
+      this.links.forEach((elem, order) => {
+        const hash = elem.getAttribute('href').slice(1);
+        const src = elem.dataset.gallerySrc;
+        this.map.push({ hash, src });
+      });
+    }
 
     // 各要素生成
     this.createModal();
 
     // イベント登録
-    this.handleEvents();
+    this.handleEvents(syncWithHistory);
+
+    // 初期表示
+    if (syncWithHistory && location.hash) this.hashChangeHandler();
   }
 
   createModal() {
@@ -96,28 +113,47 @@ export default class Modal {
     this.modal.appendChild(this.next);
   }
 
-  handleEvents() {
-    this.items.forEach((item, i) => {
-      item.addEventListener('click', () => {
-        this.show(i);
+  // hashを使用して履歴を残す場合は, 各メソッドに pushState を追加
+  handleEvents(withSync) {
+    // 開く
+    this.links.forEach((item, i) => {
+      item.addEventListener('click', (event) => {
+        event.preventDefault();
+        this.change(i, withSync);
       });
     });
 
-    this.overlay.addEventListener('click', () => this.hide());
-    this.close.addEventListener('click', () => this.hide());
-    this.prev.addEventListener('click', () => this.show(this.index - 1));
-    this.next.addEventListener('click', () => this.show(this.index + 1));
+    // 閉じる
+    this.overlay.addEventListener('click', () => this.hide(withSync));
+    this.close.addEventListener('click', () => this.hide(withSync));
+
+    // 移動
+    this.prev.addEventListener('click', () => this.change(this.index - 1, withSync));
+    this.next.addEventListener('click', () => this.change(this.index + 1, withSync));
+
+    // hashchange を監視
+    if (withSync) {
+      window.addEventListener('hashchange', this.hashChangeHandler.bind(this));
+    }
   }
 
-  show(i) {
-    this.index = (i + this.items.length) % this.items.length;
-    const item = this.items[this.index];
-    const img = item.querySelector('img');
-    const src = img.getAttribute('src');
+  change(index, withSync) {
+    this.index = (index + this.links.length) % this.links.length;
+    if (withSync) {
+      history.pushState(this.map[this.index], '', `#${this.map[this.index].hash}`);
+    }
+    const item = this.links[this.index];
+    const src = item.dataset.gallerySrc;
+    this.show(src);
+  }
 
-    // モーダルを開く
-    this.modal.classList.remove('is-hidden');
-    this.modal.setAttribute('aria-hidden', 'false');
+  show(src) {
+    if (!this.isShown) {
+      // モーダルを開く
+      this.modal.classList.remove('is-hidden');
+      this.modal.setAttribute('aria-hidden', 'false');
+      this.shown = true;
+    }
 
     // 画像切り替え
     if (this.image.getAttribute('src')) {
@@ -134,12 +170,27 @@ export default class Modal {
     }
   }
 
-  hide() {
+  hide(withSync) {
+    if (withSync) {
+      history.pushState(null, '', location.pathname);
+    }
     this.transitionEnd(this.modal, () => {
       this.modal.classList.add('is-hidden');
     }).then(() => {
       this.modal.setAttribute('aria-hidden', 'true');
     });
+    this.shown = false;
+  }
+
+  hashChangeHandler() {
+    const hash = location.hash.slice(1);
+    const index = this.map.findIndex(item => item.hash === hash);
+    if (!hash || index === -1) {
+      // hash が空 もしくは map に存在しない場合 (Modalと無関係のAnchorに移動する場合)
+      if (this.shown) this.hide(false);
+    } else {
+      this.change(index, false);
+    }
   }
 
   transitionEnd(elem, func) {

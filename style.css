@@ -986,10 +986,6 @@ button, input, select, textarea {
   bottom: 0;
 }
 
-[data-gallery-item] {
-  cursor: pointer;
-}
-
 /**
  * Component - Slider
  */

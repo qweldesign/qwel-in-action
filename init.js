@@ -1,6 +1,36 @@
 // Vue
 import { createApp } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.0/vue.esm-browser.prod.js';
 
+// Action Core
+import ActionCore from './js/action-core.js';
+
+// Fader
+import Fader from './js/fader.js';
+
+// Modal
+import Modal from './js/modal.js';
+
+// Slider
+import Slider from './js/slider.js';
+
+/**
+ * Auto Copyright
+ * © 2026 QWEL.DESIGN (https://qwel.design)
+ * Released under the MIT License.
+ * See LICENSE file for details.
+ */
+class AutoCopyright {
+  constructor(startYear, companyName, elem) {
+    elem ||= document.querySelector('.footer__copyright');
+    if (elem) elem.innerHTML = this.generate(startYear, companyName);
+  }
+
+  generate(startYear, companyName) {
+    const currentYear = new Date().getFullYear();
+    return `&copy; ${startYear} - ${currentYear} ${companyName}`;
+  }
+}
+
 const data = {
   data() {
     return {
@@ -117,44 +147,19 @@ const data = {
         youtube: false
       }
     };
+  },
+  mounted() {
+    this.init();
+  },
+  methods: {
+    init() {
+      new ActionCore.Preset();
+      new Fader();
+      new Modal();
+      new Slider();
+      new AutoCopyright(2019, 'QWEL.DESIGN');
+    }
   }
 }
 
 createApp(data).mount('#app');
-
-// Action Core
-import ActionCore from './js/action-core.js';
-new ActionCore.Preset();
-
-// Fader
-import Fader from './js/fader.js';
-new Fader();
-
-// Modal
-import Modal from './js/modal.js';
-new Modal();
-
-// Slider
-import Slider from './js/slider.js';
-new Slider();
-
-/**
- * Auto Copyright
- * © 2026 QWEL.DESIGN (https://qwel.design)
- * Released under the MIT License.
- * See LICENSE file for details.
- */
-
-class AutoCopyright {
-  constructor(startYear, companyName, elem) {
-    elem ||= document.querySelector('.footer__copyright');
-    if (elem) elem.innerHTML = this.generate(startYear, companyName);
-  }
-
-  generate(startYear, companyName) {
-    const currentYear = new Date().getFullYear();
-    return `&copy; ${startYear} - ${currentYear} ${companyName}`;
-  }
-}
-
-new AutoCopyright(2019, 'QWEL.DESIGN');

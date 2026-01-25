@@ -81,10 +81,12 @@
             <h2 class="section__heading" data-readable>{{ sections['service'].name }}</h2>
             <div class="section__container" data-readable>
               <div class="postList postList--grid" data-gallery="modal">
-                <div class="postList__item" data-gallery-main v-for="item in sections['service'].items">
+                <div class="postList__item" data-gallery-main v-for="item, i in sections['service'].items">
                   <section class="postItem">
-                    <figure class="postItem__image" data-gallery-item>
-                      <img :src="item.src">
+                    <figure class="postItem__image">
+                      <a :href="`#service0${i}`" :data-gallery-src="item.src">
+                        <img :src="item.src">
+                      </a>
                     </figure>
                     <div class="postItem__content">
                       <div class="postItem__info">
