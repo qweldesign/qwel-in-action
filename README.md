@@ -60,7 +60,7 @@ QWEL.DESIGN の仕事としては、WordPressのオリジナルテーマ開発�
 それらは、**機能と表現の間**にあるものとして、手を動かしながら少しずつ形にしてきた "クラフト" の記録です。  
 
 ▶ [Creative Crafts (JS作品集)](https://qwel.design/creative/)  
-▶ [Creative Tools (PHP作品集)](https://tools.qwel.design/)  
+▶ [Creative Tools (PHP作品集)](https://qwel.design/tools/)  
 
 ---
 
@@ -79,7 +79,7 @@ QWEL.DESIGN の仕事としては、WordPressのオリジナルテーマ開発�
 
 QWEL にご興味を持っていただいた方には、**GitHubから制作実績・プロフィール**を見ていただいたり、**お問い合わせフォームからご意見・ご感想**をお寄せいただけますと嬉しいです。 
 
-▶ [お問い合わせフォーム](https://tools.qwel.design/contact-form/)
+▶ [お問い合わせフォーム](https://qwel.design/tools/contact-form/)
 
 ---
 

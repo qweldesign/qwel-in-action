@@ -86,7 +86,7 @@ $cms = new ContentEngine();
           </svg>
           <span>GitHub</span>
         </a>
-        <a class="footer__item footer__item--contact" href="https://tools.qwel.design/contact-form/" target="_blank" rel="noopener">
+        <a class="footer__item footer__item--contact" href="https://qwel.design/tools/contact-form/" target="_blank" rel="noopener">
           <svg class="icon icon--si icon--mail icon--md" width="36" height="36" aria-hidden="true">
             <use href="./icons.svg#si-mail"></use>
           </svg>
