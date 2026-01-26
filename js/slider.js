@@ -156,7 +156,7 @@ export default class Slider {
     this.prev.classList.add('slider__prev');
     this.prev.setAttribute('href', '#');
     let icon = document.createElement('div');
-    icon.classList.add('icon', 'icon--chevron-left', 'icon--md');
+    icon.classList.add('icon', 'is-chevron-left', 'is-md');
     icon.innerHTML = '<span class="icon__span"></span>';
     this.prev.appendChild(icon);
 
@@ -165,7 +165,7 @@ export default class Slider {
     this.next.classList.add('slider__next');
     this.next.setAttribute('href', '#');
     icon = document.createElement('div');
-    icon.classList.add('icon', 'icon--chevron-right', 'icon--md');
+    icon.classList.add('icon', 'is-chevron-right', 'is-md');
     icon.innerHTML = '<span class="icon__span"></span>';
     this.next.appendChild(icon);
 

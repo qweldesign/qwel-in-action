@@ -4,10 +4,12 @@
 
 .form {
   @include form();
+  text-align: center;
 
-  &__table {
+  table {
     @include table();
     margin-block-end: space("medium");
+    text-align: left;
 
     th {
       width: 12rem;
@@ -20,7 +22,13 @@
     }
   }
 
-  &__buttons {
-    @include row(center);
+  [type="submit"] {
+    display: inline-block;
+    width: 14rem;
+    height: 3.5rem;
+    line-height: 3.5rem;
+    margin-inline: space();
+    @include make-button();
+    @include make-button-color-normal("primary");
   }
 }

@@ -83,7 +83,7 @@ export default class Modal {
     this.close = document.createElement('div');
     this.close.classList.add('modal__close');
     const closeIcon = document.createElement('div');
-    closeIcon.classList.add('icon', 'icon--close', 'icon--lg');
+    closeIcon.classList.add('icon', 'is-close', 'is-lg');
     const closeSpan = document.createElement('span');
     closeSpan.classList.add('icon__span');
     closeIcon.appendChild(closeSpan);
@@ -94,7 +94,7 @@ export default class Modal {
     this.prev = document.createElement('div');
     this.prev.classList.add('modal__prev');
     const prevIcon = document.createElement('div');
-    prevIcon.classList.add('icon', 'icon--chevron-left', 'icon--lg');
+    prevIcon.classList.add('icon', 'is-chevron-left', 'is-lg');
     const prevSpan = document.createElement('span');
     prevSpan.classList.add('icon__span');
     prevIcon.appendChild(prevSpan);
@@ -105,7 +105,7 @@ export default class Modal {
     this.next = document.createElement('div');
     this.next.classList.add('modal__next');
     const nextIcon = document.createElement('div');
-    nextIcon.classList.add('icon', 'icon--chevron-right', 'icon--lg');
+    nextIcon.classList.add('icon', 'is-chevron-right', 'is-lg');
     const nextSpan = document.createElement('span');
     nextSpan.classList.add('icon__span');
     nextIcon.appendChild(nextSpan);

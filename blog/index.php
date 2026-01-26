@@ -27,7 +27,7 @@ $cms = new ContentEngine();
       <div class="main__container">
         <?php echo $cms->get_breadcrumb(); ?>
         <?php if (!$cms->is_single()) { ?>
-          <ul class="postList postList--list">
+          <ul class="postList is-list">
             <?php foreach ($cms->get_posts() as $post) { ?>
               <li class="postList__item postItem">
                 <figure class="postItem__image">
