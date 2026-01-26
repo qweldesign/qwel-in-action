@@ -6,16 +6,16 @@ Web開発スターターキット
 Web development starter kit  
 Includes the following 10 **UI/UX Components**  
 
-- ScrollToAnchor
-- ActiveHeader
-- ScrollSpy
-- ReadableOnScroll
-- BackToTop
-- DrawerMenu
-- SafeEmbed
-- Fader
-- Modal
-- Slider
+- **ScrollToAnchor**: header高さをCSS変数にセットし, アンカーリンクのスクロール位置を補正する機能
+- **ActiveHeader**: header要素のクラス切り替えをスクロールで制御する機能
+- **ScrollSpy**: スクロール位置 (セクション) に応じてナビゲーションの状態を更新する機能
+- **ReadableOnScroll**: 画面内を出入りする要素のクラスを切り替える機能
+- **BackToTop**: トップへ戻るボタンを自動生成し, 制御する機能
+- **DrawerMenu**: ドロワーメニューを自動生成し, 制御する機能
+- **SafeEmbed**: 主にGoogleMap等の埋め込みをロックし, クリックでロック解除するカバーを生成する機能
+- **Fader**: フェードアニメーションで遷移するギャラリー
+- **Modal**: モーダルウィンドウとして機能するギャラリー
+- **Slider**: スライドアニメーションで遷移するギャラリー
 
 ▶ [QWEL in Action | フルスクラッチのUI/UXコンポーネント集](https://qwel.design)  
 
@@ -59,8 +59,8 @@ QWEL.DESIGN の仕事としては、WordPressのオリジナルテーマ開発�
 一方で、**純粋な好奇心と創作の楽しさ**から、インタラクティブなアニメーションやビジュアル表現にも取り組んできました。  
 それらは、**機能と表現の間**にあるものとして、手を動かしながら少しずつ形にしてきた "クラフト" の記録です。  
 
-▶ [Creative Crafts (JS作品集)](https://qwel.design/creative/)  
-▶ [Creative Tools (PHP作品集)](https://qwel.design/tools/)  
+▶ [Creative Crafts](https://qwel.design/creative/)  
+▶ [Creative Tools](https://qwel.design/tools/)  
 
 ---
 
